@@ -1,0 +1,419 @@
+#overallDiv {
+    /* background-color: rgb(177, 166, 166); */
+    /* margin: 0 150px; */
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    width: 40%;
+}
+
+#header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 40px;
+    /* position: fixed; */
+}
+
+#header .header-icon {
+    display: flex;
+    width: 20px;
+    height: 20px;
+}
+
+.header-icons {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    cursor: pointer;
+}
+
+#first-section {
+   display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 12px 0;
+}
+
+#first-section h2 {
+    font-size: 18px;
+    /* font-weight: 500; */
+    letter-spacing: -1px;
+    margin-bottom: 4px;
+}
+
+#first-section p {
+    font-size: 18px;
+    font-weight: 500;
+    letter-spacing: -1px;
+}
+
+#first-section button {
+    display: flex;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    background-color: #FF9326;
+    cursor: pointer;
+}
+
+#first-section button:hover {
+    display: flex;
+    padding: 10px;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    background-color: #e77f18;
+}
+
+#search-area {
+    display: flex;
+    border: 1px solid #b6b0ab;
+    border-radius: 6px;
+    height: 32px;
+    padding: 4px 16px;
+    gap: 8px;
+    box-sizing: border-box;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    margin-top: 10px;
+    background: none;
+}
+
+#search-area:focus {
+    border: 1px solid #FF9326;
+}
+
+#search-area input {
+    display: flex;
+    border: none;
+    appearance: none;
+    width: 100%;
+    font-size: 14px;
+    background-color: unset;
+
+}
+
+#search-area input:focus {
+    display: flex;
+    border: none;
+    appearance: none;
+    outline: none;
+}
+
+#search-area input:placeholder-shown {
+   font-size: 14px;
+   color: rgb(248, 243, 243);
+}
+
+#search-area button {
+    display: flex;
+    border: none;
+    background: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    justify-content: center;
+    align-items: center;
+}
+
+#search-area img {
+    width: 14px;
+    height: 14px;
+}
+
+#filter-buttons {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    margin-top: 10px;
+}
+
+.filter {
+    display: flex;
+    all: unset;
+    padding: 8px 10px;
+    font-size: 16px;
+    color: black;
+    border-bottom: 1px solid white;
+    cursor: pointer;
+    margin: 12px 0;
+}
+
+.filter:focus {
+    cursor: pointer;
+}
+
+#taskList {
+    display: flex;
+    flex-direction: column;
+}
+
+#popup {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(82, 79, 79, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+#addTaskPopup {
+    background: white;
+    width: 30%;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 6px;
+    box-shadow: 0px 4px 20px rgba(0,0,0,0.3);
+} 
+
+#addTaskPopup h2 {
+    display: flex;
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    color:#FF9326;
+}
+
+#addTaskPopup label {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: black;
+}
+
+#addTaskPopup input {
+    all: unset;
+    border: 1px solid grey;
+    display: flex;
+    margin-top: 10px;
+    padding: 8px;
+    border-radius: 4px;
+}
+
+#addTaskPopup textarea {
+    all: unset;
+    display: flex;
+    margin-top: 10px;
+    border: 1px solid grey;
+    border-radius: 4px;
+    resize: none;
+    font-size: 14px;
+    font-weight: 100;
+    padding: 8px;
+}
+
+#addTaskPopup .group-div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+#addTaskPopup button {
+    display: flex;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px 10px;
+    font-size: 16px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    background-color: #FF9326;
+    text-align: center;
+    margin: 10px 0;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#addTaskPopup textarea::placeholder {
+   font-size: 12px;
+   padding: 4px;
+}
+
+#addTaskPopup input::placeholder {
+   font-size: 12px;
+   font-family: Space-Grotesk;
+   padding: 4px;
+}
+
+/* #addTaskPopup input:focus {
+  appearance: none;
+  border: 1.5px solid #FF9326;
+  border-radius: 4px;
+  outline: #e77f18;
+padding: 2px 4px;
+  box-sizing: border-box;
+} */
+
+/* #addTaskPopup textarea:focus {
+  appearance: none;
+  border: 1.5px solid #FF9326;
+  border-radius: 4px;
+  outline: #e77f18;
+    padding: 2px 4px;
+  box-sizing: border-box;
+} */
+
+
+#addTaskPopup button:hover {
+    background-color: #e77f18;
+}
+
+/* style rendered items tomorrow */
+.taskTitle {
+    color: black;
+    display: flex;
+    font-weight: 500;
+    font-size: 16px;
+    margin-bottom: 2px;
+}
+
+.descOfTask {
+    color: rgb(27, 27, 27);
+    display: flex;
+    font-weight: 200;
+    font-size: 14px;
+    text-decoration: none;
+    margin-bottom: 2px;
+}
+
+.dateOfTask {
+    color: rgb(0, 0, 0);
+    display: flex;
+    font-weight: 300;
+    font-size: 14px;
+    margin-bottom: 3px;
+}
+
+.editTaskBtn, .deleteTaskBtn {
+
+    background: none;
+    display: inline-flex;
+    padding: 3px 6px;
+    font-size: 10px;
+    border-radius: 3px;
+    color: #FF9326;
+    border: 1.5px solid #FF9326;
+    cursor: pointer;
+    margin-right: 4px;
+}
+
+.editTaskBtn:hover, .deleteTaskBtn:hover {
+    background-color: #e77f18;
+    border: none;
+    border-radius: 3px;
+    color: white;
+}
+
+.taskItemContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: center;
+    /* background-color: #faf9c9; */
+    border: 1px solid #e7e3de;
+    margin-bottom: 16px;
+    padding: 12px 10px;
+    gap: 10px;
+    border-radius: 6px;
+    width: 100%;
+}
+
+/* .checkedTaskDiv  */
+.checkedTaskDiv {
+    display: flex;
+    width: 16px;
+    height: 16px;
+    justify-self: center;
+    align-items: center;
+}
+
+.checkedTask {
+    display: flex;
+    height: 16px;
+    width: 16px;
+}
+
+.taskItemContainer {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.taskDiv {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: column;
+    gap: 4px;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.btnDiv {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* screen size adjust */
+/* @media (max-width: 375px) {
+  body {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 425px) {
+  .container {
+    padding: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 90%;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container {
+    width: 80%;
+  }
+}
+
+@media (min-width: 1441px) {
+  .container {
+    max-width: 1400px;
+    margin: auto;
+  }
+} */
