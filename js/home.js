@@ -1,379 +1,290 @@
 document.addEventListener("DOMContentLoaded", () => {
-
-const activateAddTask = document.getElementById('firstSectionButton')
+// ---- elements from DOM ----
+const activateAddTask = document.getElementById('firstSectionButton');
 const darkModeBtn = document.getElementById("darkModeBtn");
 const addTaskBtn = document.getElementById("addTaskBtn");
 const body = document.body;
-const header = document.getElementById("header");
-const firstSection = document.getElementById("first-section");
 const searchArea = document.getElementById("search-area");
 const taskList = document.getElementById("taskList");
 const popup = document.getElementById("popup");
 const addTaskPopup = document.getElementById("addTaskPopup");
 const notification = document.getElementById("notification");
 const searchIcon = document.getElementById("searchIcon");
-const allText = document.querySelectorAll("h1, h2, h3, p, label, span");
-const allInputs = document.querySelectorAll("input, textarea");
 const filterButtons = document.querySelectorAll(".filter");
-const popupLabel = document.querySelectorAll(".popupLabel");
+
 
 const taskName = document.getElementById("taskName");
 const taskDesc = document.getElementById("taskDesc");
-const date = document.getElementById("date");
-const time = document.getElementById("time");
+const dateInput = document.getElementById("date");
+const timeInput = document.getElementById("time");
 
-// 1. change mode
 let isDark = false;
 
-darkModeBtn.addEventListener("click", switchMode);
 
-function switchMode(e) {
+
+
+// show task popup
+activateAddTask.addEventListener('click', displayAddTask);
+
+function displayAddTask(e) {
     e.preventDefault();
-
-    isDark = !isDark;
-
-    if (isDark) {
-        applyDarkMode();
-    } else {
-        applyLightMode();
-    }
+    popup.style.display = "flex";
 }
 
-// for dark mode
-function applyDarkMode(e) {
-    e.preventDefault();
-    body.style.backgroundColor = "#1a1919ff";
-    body.style.color = "white";
-    addTaskPopup.style.backgroundColor = "#1a1919ff";
-    darkModeBtn.src = "../assets/light mode.svg";
-    notification.src = "../assets/white notification.svg";
-    searchIcon.src = "../assets/white search.svg"
-    if (allText.style.color === "black") {
-        allText.style.color === "white"
-    }
+popup.addEventListener("click", closeAddTask);
 
-    filterButtons.forEach(btn => {
-        btn.style.all= "unset";
-        btn.style.color = "white";
-    });
-}
-
-// for light mode
-function applyLightMode(e) {
-    e.preventDefault();
-    body.style.backgroundColor = "white";
-    body.style.color = "black";
-    darkModeBtn.src = "../assets/Dark mode.svg";
-    notification.src = "../assets/Notification.svg";
-    searchIcon.src = "../assets/search.svg"
-
-    filterButtons.forEach(btn => {
-        btn.style.all= "unset";
-        btn.style.color = "black";
-    });
-}
-
-// 2. activate add task card
-
-activateAddTask.addEventListener('click', displayAddTask)
-
-function displayAddTask (e) {
-    e.preventDefault();
-    popup.style.display = "flex"
-}
-
-popup.addEventListener("click", closeAddTask)
-    
-function closeAddTask (e) {
-    e.preventDefault();
+function closeAddTask(e) {
     if (e.target === popup) {
+        popup.style.display = "none"
+    };
+}
+
+// create backend and send data to database haew God epp my life
+
+addTaskPopup.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const nameValue = taskName.value.trim();
+    const descValue = taskDesc.value.trim();
+    const dueDateValue = dateInput.value;
+    const dueTimeValue = timeInput.value;
+
+    const convertedDate = new Date(`${dueDateValue}T${dueTimeValue}:00`).toISOString();
+
+    const newTaskCreated = {
+        task_name: nameValue,
+        Description: descValue,
+        due_date: dueDateValue,
+        due_time: convertedDate
+    };
+
+    console.log(newTaskCreated)
+
+    fetch('https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/todo_list', {
+        method: 'POST',
+        headers: { 
+        "Content-Type": "application/json"
+        },
+        body: JSON.stringify(newTaskCreated)
+    })
+
+    .then(res => res.json())
+
+    .then(info => {
+        addTaskPopup.reset();
         popup.style.display = "none";
+        getAllTask();
+    })
+
+    .catch(err => {
+        console.error("Error from add task code:", err);
+        alert("Add task failed, retry.");
+    });
+
+});
+
+
+//render task to UI
+function renderTask(taskArray) {
+    taskList.innerHTML = "";
+
+    if(!Array.isArray(taskArray) || taskArray.length === 0){
+        const emptyMsg = document.createElement("p");
+        emptyMsg.textContent = "No task here.";
+        taskList.appendChild(emptyMsg);
+        emptyMsg.setAttribute('class', 'emptyMsg')
+        return;
     }
 
-    else {popup.style.display = "flex"}
-};
+    const now = new Date();
 
+    taskArray.forEach(function(task) {
 
-// 3. send stuffs to backend
-addTaskPopup.addEventListener('submit', submitTask)
+        const taskItemContainer = document.createElement("div");
+        taskItemContainer.className = "taskItemContainer";
 
-function submitTask (e) {
-e.preventDefault();
+        const checkedTaskDiv = document.createElement("div");
+        checkedTaskDiv.className = "checkedTaskDiv";
 
-const nameInput = taskName.value;
-const descriptionInput = taskDesc.value;
-const dueDateInput= date.value;
-const dueTimeInput = time.value;
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.checked = task.completed;
 
-const convertedDate = new Date(`${dueDateInput}T${dueTimeInput}:00`).toISOString();
+        // const checkedSquare = document.createElement("div");
+        // checkedSquare.className = "checkedSquare";
 
-const newTaskCreated = {
-        task_name: nameInput,
-        Description: descriptionInput,
-        due_date: dueDateInput,   
-        due_time: convertedDate
-};
+        // if(task.completed) { 
+        //     checkbox.checked = true;
+        //     checkedSquare.classList.add('see-checked');
+        // }
 
-fetch ('https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/todo_list', {
-    method: 'POST',
-    headers: {"Content-Type": "application/json"},
-    body: JSON.stringify(newTaskCreated)
-    
-})
+        checkbox.addEventListener("change", forCheckbox )
+        // function(ev){
+        //     fetch(`https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/todo_list/${task.id}`, {
+        //         method: "PATCH",
+        //         headers: { "Content-Type": "application/json" },
+        //         body: JSON.stringify({ completed: ev.target.checked })
+        //     })
 
-.then(res=> res.json())
-.then(info => {
-    console.log("Task added:", info);   
-    renderTask();
-    addTaskPopup.reset();  
-    popup.style.display = "none";
-})
+        //     .then(res => res.json())
 
-}
+        //     .then(data=>{
+        //         // if(ev.target.checked) checkedSquare.classList.add('visible');
+        //         // else checkedSquare.classList.remove('visible');
+        //         getAllTask();
+        //     })
 
-// render to UI
-function renderTask () {
+        //     .catch(err=>{
+        //         console.error('checkbox function failed:', err);
+        //     });
 
-    fetch("https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/todo_list")
-    .then(function(res){
-        return res.json();
-    })
-    .then(function(data){
+        // });
 
-        taskList.innerHTML = "";
+        checkedTaskDiv.appendChild(checkbox);
+        // checkedTaskDiv.appendChild(checkedSquare);
 
-        data.forEach(function(task) {
+        const taskDiv = document.createElement("div");
+        taskDiv.className = "taskDiv";
 
-            let taskItemContainer = document.createElement("div");
-            taskItemContainer.className = "taskItemContainer";
+        const title = document.createElement("h3");
+        title.textContent = task.task_name;
+        title.className = "taskTitle";
 
-            let checkedTaskDiv = document.createElement("div");
-            checkedTaskDiv.className = "checkedTaskDiv";
+        const desc = document.createElement("p");
+        desc.textContent = task.Description || "";
+        desc.className = "descOfTask";
 
-            let checkedTask = document.createElement("img");
-            checkedTask.src = "../assets/unselected.svg";
-            checkedTask.className = "checkedTask";
+        const dateEl = document.createElement("h5");
+        dateEl.textContent = "Due date: " + (task.due_date || "");
+        dateEl.className = "dateOfTask";
 
-            checkedTaskDiv.appendChild(checkedTask);
-
-            let taskDiv = document.createElement("div");
-            taskDiv.className = "taskDiv";
-
-
-            let taskIdNo = document.createElement("p");
-            taskIdNo.textContent = task.id;
-            taskIdNo.style.display = "none"
-            taskIdNo.className = "taskIdNo";
-
-
-            let title = document.createElement("h3");
-            title.textContent = task.task_name;
-            title.className = "taskTitle";
-
-            let desc = document.createElement("p");
-            desc.textContent = task.Description;
-            desc.className = "descOfTask";
-
-            let date = document.createElement("h5");
-            date.textContent = "Due date: " + task.due_date;
-            date.className = "dateOfTask";
-
-            
-            let editBtn = document.createElement("button");
-            editBtn.textContent = "Edit";
-            editBtn.className = "editTaskBtn";           
-
-            let deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "Delete";
-            deleteBtn.className = "deleteTaskBtn";
-            
-
-            deleteBtn.addEventListener("click", (e)=> {
-                e.preventDefault();
-                let getTaskId = taskDiv.querySelector(".taskIdNo").textContent;
-                // let grandParentForDel = deleteBtn.parentNode.parentNode; 
-
-                removeFromUi(e);
-                delFromBackend(getTaskId);
-            })
-
-            let btnDiv = document.createElement("div");
-            btnDiv.className = "btnDiv"
-            btnDiv.style.display = "flex"
-
-            btnDiv.appendChild(editBtn);
-            btnDiv.appendChild(deleteBtn);
-
-            taskDiv.appendChild(title);
-            taskDiv.appendChild(desc);
-            taskDiv.appendChild(date);
-            taskDiv.appendChild(btnDiv);
-            // taskDiv.appendChild(editBtn);
-            // taskDiv.appendChild(deleteBtn);
-            taskDiv.appendChild(taskIdNo);
-            
-
-            taskItemContainer.appendChild(checkedTaskDiv);
-            taskItemContainer.appendChild(taskDiv);   
-
-            taskList.appendChild(taskItemContainer);
-
-        });
-
-    })
-    .catch(function(err){
-        console.log("show error:", err);
-    });
-}
-
-function removeFromUi(e) {
-    let grandParent = e.target.parentNode.parentNode;
-    grandParent.remove();
-}
-
-
-function delFromBackend(getTaskId) {
-    fetch(`https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/todo_list/${getTaskId}`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json"
+        // strikethrough completed tasks
+        if(task.completed){
+            title.style.textDecoration = "line-through";
+            desc.style.textDecoration = "line-through";
+            dateEl.style.textDecoration = "line-through";
         }
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log("Task deleted from backend:", data); 
-    })
-    .catch(error => {
-        console.error("Error deleting task:", error);
+
+        // check if task missed
+
+        const editBtn = document.createElement("button");
+        editBtn.textContent = "Edit";
+        editBtn.className = "editTaskBtn";
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Delete";
+        deleteBtn.className = "deleteTaskBtn";
+
+        deleteBtn.addEventListener("click", (e)=>{
+            e.preventDefault();
+            fetch(`https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/todo_list/${task.id}`,{
+                method:"DELETE",
+                headers:{ "Content-Type": "application/json" }
+            })
+            .then(res => res.json())
+            .then(data=>{
+                getAllTask();
+            })
+            .catch(err=>{
+                console.error("Delete error:", err);
+            });
+        });
+
+        const btnDiv = document.createElement("div");
+        btnDiv.className = "btnDiv";
+        btnDiv.appendChild(editBtn);
+        btnDiv.appendChild(deleteBtn);
+
+        taskDiv.appendChild(title);
+        taskDiv.appendChild(desc);
+        taskDiv.appendChild(dateEl);
+        taskDiv.appendChild(btnDiv);
+
+        taskItemContainer.appendChild(checkedTaskDiv);
+        taskItemContainer.appendChild(taskDiv);
+
+        taskList.appendChild(taskItemContainer);
     });
 }
 
 
 
-
-
-
-
-// change border of filter columns
-// having issues, fix later
-
-filterButtons.forEach(button => { 
-button.addEventListener('click', filterFunction)
-})
-
-function filterFunction (e) {
-    e.preventDefault();
-    e.target.style.borderColor = "#FF9326";
-}
-
-renderTask();
-
-function getAllTask () {
-
-    fetch("https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/todo_list")
-    .then(function(res){
-        return res.json();
-    })
-    .then(function(data){
-
-        taskList.innerHTML = "";
-
-        data.forEach(function(task) {
-
-            let taskItemContainer = document.createElement("div");
-            taskItemContainer.className = "taskItemContainer";
-
-            let checkedTaskDiv = document.createElement("div");
-            checkedTaskDiv.className = "checkedTaskDiv";
-
-            let checkedTask = document.createElement("img");
-            checkedTask.src = "../assets/unselected.svg";
-            checkedTask.className = "checkedTask";
-
-            checkedTaskDiv.appendChild(checkedTask);
-
-            let taskDiv = document.createElement("div");
-            taskDiv.className = "taskDiv";
-
-
-            let taskIdNo = document.createElement("p");
-            taskIdNo.textContent = task.id;
-            taskIdNo.style.display = "none"
-            taskIdNo.className = "taskIdNo";
-
-
-            let title = document.createElement("h3");
-            title.textContent = task.task_name;
-            title.className = "taskTitle";
-
-            let desc = document.createElement("p");
-            desc.textContent = task.Description;
-            desc.className = "descOfTask";
-
-            let date = document.createElement("h5");
-            date.textContent = "Due date: " + task.due_date;
-            date.className = "dateOfTask";
-
+// fetch request returning error haew God abeg
+function forCheckbox (ev) {
             
-            let editBtn = document.createElement("button");
-            editBtn.textContent = "Edit";
-            editBtn.className = "editTaskBtn";           
-
-            let deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "Delete";
-            deleteBtn.className = "deleteTaskBtn";
-            
-
-            deleteBtn.addEventListener("click", (e)=> {
-                e.preventDefault();
-                let getTaskId = taskDiv.querySelector(".taskIdNo").textContent;
-                // let grandParentForDel = deleteBtn.parentNode.parentNode; 
-
-                removeFromUi(e);
-                delFromBackend(getTaskId);
+             fetch(`https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/todo_list/${task.id}`, {
+                method: "PATCH",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ completed: ev.target.checked })
             })
 
-            let btnDiv = document.createElement("div");
-            btnDiv.className = "btnDiv"
-            btnDiv.style.display = "flex"
+            .then(res => res.json())
 
-            btnDiv.appendChild(editBtn);
-            btnDiv.appendChild(deleteBtn);
+            .then(data=>{
+                // if(ev.target.checked) checkedSquare.classList.add('visible');
+                // else checkedSquare.classList.remove('visible');
+                getAllTask();
+            })
 
-            taskDiv.appendChild(title);
-            taskDiv.appendChild(desc);
-            taskDiv.appendChild(date);
-            taskDiv.appendChild(btnDiv);
-            // taskDiv.appendChild(editBtn);
-            // taskDiv.appendChild(deleteBtn);
-            taskDiv.appendChild(taskIdNo);
-            
+            .catch(err=>{
+                console.error('checkbox function failed:', err);
+            });
+}
 
-            taskItemContainer.appendChild(checkedTaskDiv);
-            taskItemContainer.appendChild(taskDiv);   
+// add functionality to filter buttons and you're done yayyy
 
-            taskList.appendChild(taskItemContainer);
+filterButtons.forEach(button=>{
+    button.addEventListener('click', function(e){
+        e.preventDefault();
+        filterButtons.forEach(btn => btn.classList.remove('active-filter'));
+        button.classList.add('active-filter');
+        const key = button.textContent.trim().toLowerCase();
+        getAllTask(key);
+    });
+});
 
-        });
+//change searchbtn color in click input
 
+const searchInput = searchArea.querySelector("input");
+const searchBtn = document.getElementById("searchBtn");
+searchInput.addEventListener("click", function(e){
+    e.preventDefault();
+    searchArea.style.border = "2px solid #FF9326";
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    getAllTask(null, searchTerm);
+});
+
+
+function getAllTask(filterKey = null, searchTerm = ""){
+    fetch("https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/todo_list")
+    .then(res => res.json())
+    .then(data=>{
+        let tasks = data.slice();
+
+        // display by filter
+        if(filterKey){
+            if(filterKey.includes("active")) tasks = tasks.filter(t=>!t.completed);
+            else if(filterKey.includes("completed")) tasks = tasks.filter(t=>t.completed);
+            else if(filterKey.includes("missed")){
+                const now = new Date();
+                tasks = tasks.filter(t=>{
+                    const due = t.due_time ? new Date(t.due_time) : null;
+                    return due && !t.completed && due < now;
+                });
+            }
+        }
+
+        renderTask(tasks);
     })
-    .catch(function(err){
-        console.log("show error:", err);
+    .catch(err=>{
+        console.error("Fetch error:", err);
     });
 }
 
 getAllTask();
 
 
+
+
+
 });
-
-
-
-
-// remaining tasks:
-// edit button function
-// change search div button on click
-// put edit and del button side by side
-// perfect dark mode bg and font color settings and change icon
-// get all items upon refresh
-// confirm if delte is deleting from backend
