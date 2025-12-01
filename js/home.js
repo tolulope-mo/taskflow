@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-// ---- elements from DOM ----
 const activateAddTask = document.getElementById('firstSectionButton');
 const darkModeBtn = document.getElementById("darkModeBtn");
 const addTaskBtn = document.getElementById("addTaskBtn");
@@ -18,12 +17,9 @@ const taskDesc = document.getElementById("taskDesc");
 const dateInput = document.getElementById("date");
 const timeInput = document.getElementById("time");
 
-let isDark = false;
+//dark mode
 
-
-
-
-// show task popup
+// show add task popup
 activateAddTask.addEventListener('click', displayAddTask);
 
 function displayAddTask(e) {
@@ -110,38 +106,9 @@ function renderTask(taskArray) {
         checkbox.type = "checkbox";
         checkbox.checked = task.completed;
 
-        // const checkedSquare = document.createElement("div");
-        // checkedSquare.className = "checkedSquare";
-
-        // if(task.completed) { 
-        //     checkbox.checked = true;
-        //     checkedSquare.classList.add('see-checked');
-        // }
-
         checkbox.addEventListener("change", forCheckbox )
-        // function(ev){
-        //     fetch(`https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/todo_list/${task.id}`, {
-        //         method: "PATCH",
-        //         headers: { "Content-Type": "application/json" },
-        //         body: JSON.stringify({ completed: ev.target.checked })
-        //     })
-
-        //     .then(res => res.json())
-
-        //     .then(data=>{
-        //         // if(ev.target.checked) checkedSquare.classList.add('visible');
-        //         // else checkedSquare.classList.remove('visible');
-        //         getAllTask();
-        //     })
-
-        //     .catch(err=>{
-        //         console.error('checkbox function failed:', err);
-        //     });
-
-        // });
 
         checkedTaskDiv.appendChild(checkbox);
-        // checkedTaskDiv.appendChild(checkedSquare);
 
         const taskDiv = document.createElement("div");
         taskDiv.className = "taskDiv";
@@ -207,9 +174,6 @@ function renderTask(taskArray) {
     });
 }
 
-
-
-// fetch request returning error haew God abeg
 function forCheckbox (ev) {
             
              fetch(`https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/todo_list/${task.id}`, {
@@ -220,18 +184,14 @@ function forCheckbox (ev) {
 
             .then(res => res.json())
 
-            .then(data=>{
-                // if(ev.target.checked) checkedSquare.classList.add('visible');
-                // else checkedSquare.classList.remove('visible');
-                getAllTask();
-            })
+            .then(data=>{getAllTask();})
 
             .catch(err=>{
                 console.error('checkbox function failed:', err);
             });
 }
 
-// add functionality to filter buttons and you're done yayyy
+// add functionality to filter buttons
 
 filterButtons.forEach(button=>{
     button.addEventListener('click', function(e){
@@ -282,9 +242,6 @@ function getAllTask(filterKey = null, searchTerm = ""){
 }
 
 getAllTask();
-
-
-
 
 
 });
