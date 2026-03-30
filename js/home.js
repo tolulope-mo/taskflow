@@ -17,7 +17,6 @@ const taskDesc = document.getElementById("taskDesc");
 const dateInput = document.getElementById("date");
 const timeInput = document.getElementById("time");
 
-//dark mode
 
 // show add task popup
 activateAddTask.addEventListener('click', displayAddTask);

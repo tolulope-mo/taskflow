@@ -1,10 +1,19 @@
-let email = document.getElementById('email')
-let password = document.getElementById('password')
-let togglePassword = document.querySelector(".toggle-password");
+let heading = document.getElementById('heading')
+
 let form = document.getElementById('form')
+
+let email = document.getElementById('email')
+
+let password = document.getElementById('password')
+
+let togglePassword = document.querySelector(".toggle-password");
+
 let mailPrompt = document.getElementById('incorrect-mail-prompt')
-let passwordPrompt1 = document.getElementById("incorrect-password-prompt1");
-let passwordPrompt2 = document.getElementById("incorrect-password-prompt2");
+
+let passwordPrompt = document.getElementById("incorrect-password-prompt");
+
+let button = document.getElementById('button')
+
 let loginRedirect = document.querySelector('.signup-link');
 
 //to see password input
@@ -12,7 +21,7 @@ let loginRedirect = document.querySelector('.signup-link');
 togglePassword.addEventListener("click", seePassword)
 
 function seePassword (click) {
-    // click.preventDefault()
+    click.preventDefault()
 
   if (password.type === "password") {
     password.type = "text";           
@@ -26,7 +35,8 @@ function seePassword (click) {
 
 }
 
-// to validate inputs
+// regex for validation
+
 
 let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 let passwordRegex = /^(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/;
@@ -47,6 +57,8 @@ function formCallback (e) {
     const validateEmail = emailRegex.test(emailInput);
     const validatePassword = passwordRegex.test(passwordInput);
 
+    console.log(validateEmail, validatePassword)
+
     // update user on incorrect info
 
     if (validateEmail === false) {
@@ -58,22 +70,50 @@ function formCallback (e) {
     }
 
     if (validatePassword === false) {
-        passwordPrompt1.style.display = 'flex';
-        passwordPrompt2.style.display = 'flex';
+        passwordPrompt.style.display = 'flex';
     }
 
     else { 
-        passwordPrompt1.style.display = 'none';
-        passwordPrompt2.style.display = 'none';
+        passwordPrompt.style.display = 'none';
     }
     
-    // send data to backend and authenticate 
-    // *cries in basteed ekun egbere
-
-    if (validateEmail && validatePassword){
-        console.log("you're good to go") 
+    // send data to backend
+    let userInfo = {
+        email: emailInput,
+        password: passwordInput
     }
 
-} 
+    console.log(userInfo);
 
-loginRedirect.addEventListener('click', linkToLoginPage)
+    async function saveUserInfo () {
+        try {
+            let res = await fetch('https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/auth/signup', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userInfo)
+            })
+    
+            let data = await res.json()
+
+            if (res.ok) {
+                console.log("Success:", data)
+                // localStorage.setItem('token', data.authToken);
+                window.location.replace("login.html")
+            } else {
+                console.error("Error:", data);
+                alert(`Sign up failed: ${data.message}`);
+                // passwordPrompt.innerText = 'flex';
+            }
+
+            }
+    
+        catch (err) {
+            console.error(err)
+        }
+    }
+
+    if (validateEmail && validatePassword) {
+        saveUserInfo ();
+
+    }
+}

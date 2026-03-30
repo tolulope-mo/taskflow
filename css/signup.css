@@ -10,41 +10,47 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: auto;
   background: linear-gradient(to bottom, #FFF3E6, #F9F5F5);
 }
 
 .bigContainer {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
   background-color: white;
   padding: 40px 30px;
   border-radius: 12px;
   box-shadow: 0 8px 20px rgba(105, 104, 104, 0.1);
-  width: 100%;
-  max-width: 400px;
+  width: 85%;
+  /* margin: 0 20px; */
+  max-width: 359px;
   text-align: left;
 }
 
 .logo {
-  width: 120px;
-  height: auto;
+  display: flex;
   margin-bottom: 20px;
   align-self: center;
+  /* width: 20%; */
 }
 
-h2 {
-  font-weight: 400;
-  font-size: 16px;
-  margin-bottom: 8px;
-  text-align: left;
+
+
+body h2 {
+  display: flex;
+  font-weight: 500;
+  font-size: 20x;
+  text-align: center;
   color: black;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 
 p {
   font-weight: 300;
   font-size: 12px;
   color: #292D32;
-  margin-bottom: 20px;
+  /* margin-bottom: 20px; */
   text-align: left;
 }
 
@@ -66,6 +72,20 @@ input {
   border-radius: 8px;
   font-size: 14px;
   width: 100%;
+  outline: #FF9326;
+}
+
+input:focus {
+  border: 1px solid #FF9326;
+}
+
+form p {
+  display: none;
+  flex-direction: row;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: #f18a22;
+  font-weight: 500;
 }
 
 .password-wrapper {
@@ -75,7 +95,7 @@ input {
 }
 
 .password-wrapper input {
-  padding-right: 40px; /* space for the icon */
+  padding-right: 40px;
 }
 
 .toggle-password {
@@ -94,11 +114,18 @@ button {
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 16px;
 }
 
 button:hover {
-  background-color: #df7f20;
+  /* background-color: #df7f20; */
+  transform: scale(1.03);
 }
+
+button:active {
+  transform: scale(0.99);
+}
+
 
 .to-sign-up {
   margin-top: 15px;
@@ -110,4 +137,6 @@ button:hover {
   color: #FF9326;
   cursor: pointer;
   font-weight: 500;
+  font-size: 14px;
 }
+

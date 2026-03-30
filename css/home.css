@@ -1,3 +1,7 @@
+body {
+    background-color: var(--bg);
+    color: var(--text);
+}
 
 #overallDiv {
     margin: auto;
@@ -5,6 +9,11 @@
     flex-direction: column;
     position: relative;
     width: 40%;
+    background-color: var(--bg);
+    color: #dbbfbf;
+    padding: 20px;
+    /* border: 1px solid var(--borderGray); */
+    /* box-shadow: var(--boxShadow); */
 }
 
 /* header */
@@ -14,6 +23,8 @@
     justify-content: space-between;
     align-items: center;
     height: 40px;
+    background-color: var(--bg);
+    color: var(--text);
 }
 
 #header .header-icon {
@@ -33,25 +44,28 @@
     display: none;
 }
 
-/* first section */
 #first-section {
    display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
     margin: 12px 0;
+    background-color: var(--bg);
+    color: var(--text);
 }
 
 #first-section h2 {
     font-size: 18px;
     letter-spacing: -1px;
     margin-bottom: 4px;
+    color: var(--text);
 }
 
 #first-section p {
     font-size: 18px;
     font-weight: 500;
     letter-spacing: -1px;
+    color: var(--text);
 }
 
 #first-section button {
@@ -60,25 +74,25 @@
     font-size: 14px;
     border: none;
     border-radius: 6px;
-    color: white;
-    background-color: #FF9326;
+    color: var(--buttonText);
+    background-color:var(--accent);
     cursor: pointer;
 }
 
 /* search */
 #search-area {
     display: flex;
-    border: 1px solid #b6b0ab;
+    border: 1px solid var(--borderGray);
     border-radius: 6px;
-    /* height: 32px; */
     padding: 8px 16px;
-    gap: 8px;
+    /* gap: 8px; */
     box-sizing: border-box;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 12px;
     margin-top: 10px;
-    background: none;
+    /* background: none; */
+    background-color: var(--bg);
 }
 
 #searchBtn {
@@ -95,6 +109,7 @@ cursor: pointer;
     font-size: 14px;
     background-color: unset;
     outline: none;
+    color: var(--text);
 }
 
 /* filter buttons */
@@ -103,44 +118,55 @@ cursor: pointer;
     justify-content: start;
     align-items: center;
     gap: 8px;
-    margin-bottom: 6px;
+    /* margin-bottom: 6px; */
     margin-top: 10px;
+    background-color: var(--bg);
 }
 
 .filter {
     display: flex;
     all: unset;
-    padding: 8px 10px;
+    padding: 4px 10px;
     font-size: 16px;
-    color: black;
-    border-bottom: 1px solid white;
+    color: var(--text);
+    border-bottom: 1px solid var(--bg);
     cursor: pointer;
-    margin: 12px 0;
+    margin: 6px 0;
     background: none;
 }
 
 
 /* style active filter */
-.filter.active-filter {
-    border-bottom: 1.5px solid #FF9326;
-    color: #FF9326;
-}
+/* .filter.active-filter {
+    border-bottom: 1.5px solid var(--accent);
+     color: var(--text);
+} */
 
 /* task list */
+/* #taskList {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+} */
+
 #taskList {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    align-items: flex-start;
 }
 
-.emptyMsg {
-    display: flex;
+#emptyTaskPrompt {
+    display: none;
     flex-direction: row;
     align-self: start;
     text-align: start;
+    font-size: 16px;
+    font-style: italic;
     opacity: 0.7;
-
+    margin-top: 6px;
+    margin-left: 10px;
+    color: var(--text);
 }
 
 /* popup */
@@ -149,27 +175,29 @@ cursor: pointer;
     position: fixed;
     top: 0;
     left: 0;
+    right: 0;
+    bottom: 0;
     width: 100%;
     height: 100vh;
-    background: rgba(82, 79, 79, 0.5);
+    background: var(--cardBg);
     justify-content: center;
     align-items: center;
 }
 
 #addTaskPopup {
-    background: white;
+    background: var(--bg);
     width: 30%;
     padding: 20px;
     box-sizing: border-box;
     border-radius: 6px;
-    box-shadow: 0px 4px 20px rgba(0,0,0,0.3);
+    box-shadow:var(--boxShadow);
 } 
 
 #addTaskPopup h2 {
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 12px;
-    color:#FF9326;
+    color: var(--accent);
 }
 
 #addTaskPopup label {
@@ -178,17 +206,19 @@ cursor: pointer;
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 8px;
-    color: black;
+    color: var(--text)
 }
 
 #addTaskPopup input, #addTaskPopup textarea {
     all: unset;
-    border: 1px solid grey;
+    border: 1px solid var(--gray);
     display: flex;
     margin-top: 10px;
     padding: 8px;
     border-radius: 6px;
     box-sizing: border-box;
+    color: var(--text);
+    background: none;
 }
 
 #addTaskPopup textarea {
@@ -197,7 +227,6 @@ cursor: pointer;
     font-weight: 100;
 }
 
-/* add button */
 #addTaskPopup button {
     display: flex;
     width: 100%;
@@ -206,26 +235,28 @@ cursor: pointer;
     font-size: 16px;
     border: none;
     border-radius: 6px;
-    color: white;
-    background-color: #FF9326;
+   color: var(--buttonText);
+    background-color: var(--accent);
     text-align: center;
     margin: 10px 0;
     justify-content: center;
     cursor: pointer;
+    padding: 8px 1opx;
 }
 
 /* rendered task styles */
 .taskTitle {
-    color: black;
+    color: var(--text);
     display: flex;
     font-weight: 500;
-    font-size: 16px;
+    font-size: 14px;
     margin-bottom: 2px;
 }
 
-.descOfTask {
-    color: rgb(27, 27, 27);
+.taskDescription {
+    color: var(--text);
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     font-weight: 200;
     font-size: 14px;
@@ -233,101 +264,110 @@ cursor: pointer;
     margin-bottom: 2px;
 }
 
-.dateOfTask {
-    color: rgb(0, 0, 0);
+.taskTime {
+    color: var(--text);
     display: flex;
     font-weight: 300;
     font-size: 14px;
     margin-bottom: 3px;
 }
 
-/* add styles for buttons of added task tomorrow  */
-.editTaskBtn, .deleteTaskBtn {
-    background: none;
-    display: inline-flex;
-    padding: 6px 8px;
-    font-size: 12px;
-    border-radius: 4px;
-    /* color: #FF9326; */
-    border: 1.5px solid grey;
-    cursor: pointer;
-}
-
-.editTaskBtn:hover, .deleteTaskBtn:hover {
-    background-color: #e77f18;
-    border: none;
-    color: white;
-}
 
 /* Task item container */
-.taskItemContainer {
+.taskDiv {
+    width: 100%;
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: flex-start;
     align-items: center;
-    border: 1px solid #e7e3de;
-    margin-bottom: 16px;
+    border: 0.3px solid var(--borderGray);
+    margin-bottom: 24px;
     padding: 12px 10px;
     gap: 12px;
     border-radius: 6px;
     width: 100%;
     position: relative;
+    background-color: var(--bg);
 }
 
-/* small checked area on the left */
-.checkedTaskDiv {
+
+ .taskCheckbox {
+    all: unset;
     display: flex;
-    width: 20px;
-    height: 20px;
+    width: 18px;
+    height: 18px;
     justify-self: center;
     align-items: center;
     position: relative;
+    border: 1.5px solid var(--gray);
+    border-radius: 4px;
 }
 
-/* checkbox input style */
-.checkedTaskDiv input[type="checkbox"] {
-    display: flex;
-    width: 24px;
-    height: 24px;
-    cursor: pointer;
+ .taskCheckbox[type="checkbox"]:checked {
+    border: var(--accent);
+    background-color:var(--accent);
 }
 
-/* small square as checkbox checker */
-
-.checkedSquare {
-    position: absolute; 
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: #FF9326;
-    border-radius: 2px;
-    display: none; 
-}
-
-/* show when checked */
-.checkedSquare.see-checked {
-    display: flex;
-}
-
-.taskDiv {
+.taskDetailsDiv {
+    list-style: none;
     display: flex;
     flex-wrap: nowrap;
     flex-direction: column;
     gap: 4px;
     width: 100%;
     align-items: flex-start;
+    background-color: var(--bg);
 }
 
-.btnDiv {
+.missed1 {
+    display: flex;
+    color: var(--missedTask)
+}
+
+
+.btnsDiv {
     display: flex;
     flex-direction: row;
     gap: 8px;
     justify-content: flex-start;
     align-items: center;
     width: 100%;
+    background-color: var(--bg);
 }
+
+.editBtn, .delBtn {
+    background: none;
+    display: inline-flex;
+    padding: 6px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    color: var(--text);
+    border: 1px solid var(--opaqueAccent);
+    cursor: pointer;
+}
+
+
+.editBtn:hover, .delBtn:hover {
+    background-color: var(--accent2);
+    border: none;
+    color: white;
+}
+
+.editBtn:active, .delBtn:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease; /* smooth effect */
+}
+
+.filter.active-filter {
+  border-bottom: 1px solid var(--accent);
+}
+
+.completedTask {
+    text-decoration: line-through;
+    color: var(--gray);
+}
+
 
 /*  responsive for phone and tab */
 @media (max-width: 1024px) {
