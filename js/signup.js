@@ -16,27 +16,23 @@ let button = document.getElementById('button')
 
 let loginRedirect = document.querySelector('.signup-link');
 
-//to see password input
 
 togglePassword.addEventListener("click", seePassword)
 
-function seePassword (click) {
+function seePassword(click) {
     click.preventDefault()
 
-  if (password.type === "password") {
-    password.type = "text";           
-    togglePassword.src = "../assets/seePassword2.svg";  
-  } 
-  
-  else {
-    password.type = "password";       
-    togglePassword.src = "../assets/hidePassword.svg";  
-  }
+    if (password.type === "password") {
+        password.type = "text";
+        togglePassword.src = "../assets/seePassword2.svg";
+    }
+
+    else {
+        password.type = "password";
+        togglePassword.src = "../assets/hidePassword.svg";
+    }
 
 }
-
-// regex for validation
-
 
 let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 let passwordRegex = /^(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/;
@@ -44,76 +40,46 @@ let passwordRegex = /^(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/;
 
 form.addEventListener('submit', formCallback)
 
-function formCallback (e) {
+function formCallback(e) {
+  e.preventDefault();
 
-    e.preventDefault();
+  const emailInput = email.value;
+  const passwordInput = password.value;
 
-    // validate inputs
+  const validateEmail = emailRegex.test(emailInput);
+  const validatePassword = passwordRegex.test(passwordInput);
 
-    let emailInput = email.value;
-    let passwordInput = password.value;
+  mailPrompt.style.display = validateEmail ? "none" : "flex";
+  passwordPrompt.style.display = validatePassword ? "none" : "flex";
 
-       
-    const validateEmail = emailRegex.test(emailInput);
-    const validatePassword = passwordRegex.test(passwordInput);
+  if (!validateEmail || !validatePassword) return;
 
-    console.log(validateEmail, validatePassword)
+  const userInfo = { email: emailInput, password: passwordInput };
 
-    // update user on incorrect info
+  saveUserInfo(userInfo);
+}
 
-    if (validateEmail === false) {
-        mailPrompt.style.display = 'flex';
-    }
+async function saveUserInfo(userInfo) {
+    try {
+        let res = await fetch('https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/auth/signup', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(userInfo)
+        })
 
-    else { 
-        mailPrompt.style.display = 'none';
-    }
+        let data = await res.json()
 
-    if (validatePassword === false) {
-        passwordPrompt.style.display = 'flex';
-    }
-
-    else { 
-        passwordPrompt.style.display = 'none';
-    }
-    
-    // send data to backend
-    let userInfo = {
-        email: emailInput,
-        password: passwordInput
-    }
-
-    console.log(userInfo);
-
-    async function saveUserInfo () {
-        try {
-            let res = await fetch('https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/auth/signup', {
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(userInfo)
-            })
-    
-            let data = await res.json()
-
-            if (res.ok) {
-                console.log("Success:", data)
-                // localStorage.setItem('token', data.authToken);
-                window.location.replace("login.html")
-            } else {
-                console.error("Error:", data);
-                alert(`Sign up failed: ${data.message}`);
-                // passwordPrompt.innerText = 'flex';
-            }
-
-            }
-    
-        catch (err) {
-            console.error(err)
+        if (res.ok) {
+            console.log("Success:", data)
+            window.location.replace("login.html")
+        } else {
+            console.error("Error:", data);
+            alert(`Sign up failed: ${data.message}`);
         }
+
     }
 
-    if (validateEmail && validatePassword) {
-        saveUserInfo ();
-
+    catch (err) {
+        console.error(err)
     }
 }

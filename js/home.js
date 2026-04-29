@@ -17,8 +17,22 @@ const taskDesc = document.getElementById("taskDesc");
 const dateInput = document.getElementById("date");
 const timeInput = document.getElementById("time");
 
+document.addEventListener('DOMContentLoaded', fetchTasks)
 
-// show add task popup
+const token = localStorage.getItem('token');
+const dateEl = document.getElementById("currentDate");
+
+const today = new Date();
+
+const options = {
+  weekday: "short",
+  month: "short",
+  day: "numeric",
+};
+
+dateEl.textContent = today.toLocaleDateString("en-US", options);
+
+
 activateAddTask.addEventListener('click', displayAddTask);
 
 function displayAddTask(e) {
@@ -33,8 +47,6 @@ function closeAddTask(e) {
         popup.style.display = "none"
     };
 }
-
-// create backend and send data to database haew God epp my life
 
 addTaskPopup.addEventListener('submit', function(e){
     e.preventDefault();
@@ -78,8 +90,6 @@ addTaskPopup.addEventListener('submit', function(e){
 
 });
 
-
-//render task to UI
 function renderTask(taskArray) {
     taskList.innerHTML = "";
 
@@ -124,14 +134,11 @@ function renderTask(taskArray) {
         dateEl.textContent = "Due date: " + (task.due_date || "");
         dateEl.className = "dateOfTask";
 
-        // strikethrough completed tasks
         if(task.completed){
             title.style.textDecoration = "line-through";
             desc.style.textDecoration = "line-through";
             dateEl.style.textDecoration = "line-through";
         }
-
-        // check if task missed
 
         const editBtn = document.createElement("button");
         editBtn.textContent = "Edit";
@@ -190,8 +197,6 @@ function forCheckbox (ev) {
             });
 }
 
-// add functionality to filter buttons
-
 filterButtons.forEach(button=>{
     button.addEventListener('click', function(e){
         e.preventDefault();
@@ -201,8 +206,6 @@ filterButtons.forEach(button=>{
         getAllTask(key);
     });
 });
-
-//change searchbtn color in click input
 
 const searchInput = searchArea.querySelector("input");
 const searchBtn = document.getElementById("searchBtn");
@@ -219,8 +222,7 @@ function getAllTask(filterKey = null, searchTerm = ""){
     .then(res => res.json())
     .then(data=>{
         let tasks = data.slice();
-
-        // display by filter
+        
         if(filterKey){
             if(filterKey.includes("active")) tasks = tasks.filter(t=>!t.completed);
             else if(filterKey.includes("completed")) tasks = tasks.filter(t=>t.completed);

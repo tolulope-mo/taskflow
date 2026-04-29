@@ -14,8 +14,19 @@ const filterButtons = document.querySelectorAll('.filter');
 const searchBtn = document.getElementById('searchBtn')
 const searchIcon = document.getElementById('searchIcon')
 
-
 document.addEventListener('DOMContentLoaded', fetchTasks)
+
+const dateEl = document.getElementById("currentDate");
+
+const today = new Date();
+
+const options = {
+  weekday: "short",
+  month: "short",
+  day: "numeric",
+};
+
+dateEl.textContent = today.toLocaleDateString("en-US", options);
 
 addTaskBtn.addEventListener('click', displayPopup)
 
@@ -29,7 +40,7 @@ function displayPopup(e) {
 popup.addEventListener('click', closePopup)
 
 function closePopup (e) {
-    if (e.target ===popup ) {
+    if (e.target === popup ) {
         popup.style.display = "none"
     }
 }
@@ -76,7 +87,8 @@ function submitTask (e) {
     try {
       let result = await fetch (url, {
         method,
-        headers: {"Content-Type": "application/json"},
+        headers: { 
+          "Content-Type": "application/json",},
         body: JSON.stringify(newTask)
       })
 
@@ -343,7 +355,7 @@ async function updateTaskCompletion(task, isCompleted) {
       `https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/todo_list/${task.id}`,
       {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(updatedTask)
       }
     );

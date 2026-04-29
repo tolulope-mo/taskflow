@@ -1,8 +1,3 @@
-// const token = localStorage.getItem('token')
-// if (token) {
-//     window.location.replace("home.html")
-// }
-
 
 let heading = document.getElementById('heading')
 
@@ -22,7 +17,6 @@ let button = document.getElementById('button')
 
 let loginRedirect = document.querySelector('.signup-link');
 
-//to see password input
 
 togglePassword.addEventListener("click", seePassword)
 
@@ -41,8 +35,6 @@ function seePassword (click) {
 
 }
 
-// to validate inputs
-
 let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 let passwordRegex = /^(?=.*[0-9])(?=.*[^A-Za-z0-9]).{8,}$/;
 
@@ -53,8 +45,6 @@ function formCallback (e) {
 
     e.preventDefault();
 
-    // validate inputs
-
     let emailInput = email.value;
     let passwordInput = password.value;
 
@@ -63,8 +53,6 @@ function formCallback (e) {
     const validatePassword = passwordRegex.test(passwordInput);
 
     console.log(validateEmail, validatePassword)
-
-    // update user on incorrect info
 
     if (validateEmail === false) {
         mailPrompt.style.display = 'flex';
@@ -82,7 +70,6 @@ function formCallback (e) {
         passwordPrompt.style.display = 'none';
     }
     
-    // send data to backend
     let UserAccount = {
         email: emailInput,
         password: passwordInput
@@ -90,33 +77,31 @@ function formCallback (e) {
 
     console.log(UserAccount);
 
-    async function saveUserInfo () {
-        try {
-            let res = await fetch('https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/auth/login', {
-                method: 'POST',
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(UserAccount)
-            })
-    
-            let data = await res.json()
-
-            if (res.ok) {
-                console.log("Success:", data)
-                // localStorage.setItem('token', data.authToken)
-                window.location.replace("home.html");
-            } else {
-                console.error("Error:", data);
-                alert(`Login failed: ${data.message}`);
-            }
-        }
-    
-        catch (err) {
-            console.error(err)
-        }
-    }
-
     
     if (validateEmail && validatePassword) {
-        saveUserInfo ();
+        saveUserInfo (UserAccount);
+    }
+}
+
+
+async function saveUserInfo(UserAccount) {
+    try {
+        let res = await fetch('https://x8ki-letl-twmt.n7.xano.io/api:xqapLxIM/auth/login', {
+            method: 'POST',
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(UserAccount)
+        });
+
+        let data = await res.json();
+
+        if (res.ok) {
+            localStorage.setItem('token', data.authToken);
+            window.location.replace("home.html");
+        } else {
+            alert(data.message || "Login failed");
+        }
+
+    } catch (err) {
+        console.error(err);
     }
 }
